@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mindforge — Digital Bookstore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Source+Serif+4:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --font-ui:'Manrope',system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif;
+  --font-display:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --ink:#1a1714;
+  --ink-soft:#2a241e;
+  --paper:#f9f6f0;
+  --cream:#f0ebe0;
+  --surface:#fffdf9;
+  --gold:#c8973a;
+  --gold-light:#f5e6c8;
+  --muted:#6b6560;
+  --muted-strong:#7a7368;
+  --body:#3d3832;
+  --nav-text:#d5c7b0;
+  --hero-text:#b7ac97;
+  --footer-text:#d6c0a0;
+  --footer-link:#e6d7b0;
+  --footer-bottom:#b49c7b;
+  --footer-divider:#3a342c;
+  --border:#e0d8cc;
+  --white:#ffffff;
+  --danger:#c0392b;
+  --danger-soft:#f5d8d3;
+  --success:#2d6a4f;
+  --success-soft:#e5f2ea;
+  --warning:#9b6f1f;
+  --warning-soft:#fbf2df;
+  --radius:4px;
+  --radius-lg:8px;
+}
+body{font-family:var(--font-ui);background:var(--paper);color:var(--ink);min-height:100vh;overflow-x:hidden}
+h1,h2,h3,h4{font-family:var(--font-display)}
+.icon-inline{display:inline-flex;align-items:center;justify-content:center;gap:.45rem}
+.icon-inline i{font-size:.95em;line-height:1}
+
+/* NAV */
+nav{background:var(--ink);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100}
+.nav-brand{font-family:var(--font-display);color:var(--gold);font-size:1.6rem;font-weight:600;letter-spacing:1px;cursor:pointer}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-links a{color:var(--nav-text);font-size:.85rem;letter-spacing:.5px;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:color .2s}
+.nav-links a:hover{color:var(--gold)}
+.nav-right{display:flex;gap:1rem;align-items:center}
+.cart-btn{background:var(--gold);color:var(--ink);border:none;padding:.45rem 1.1rem;border-radius:var(--radius);font-family:var(--font-ui);font-size:.82rem;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:.4rem;transition:opacity .2s}
+.cart-btn:hover{opacity:.85}
+.cart-count{background:var(--ink);color:var(--gold);border-radius:50%;width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:500}
+.nav-icon{color:var(--nav-text);cursor:pointer;font-size:.85rem;text-transform:uppercase;letter-spacing:.5px;transition:color .2s}
+.nav-icon:hover{color:var(--gold)}
+.nav-navbtn{background:transparent;border:1px solid rgba(255,255,255,0.08);color:var(--nav-text);padding:.35rem .6rem;border-radius:6px;cursor:pointer;margin-right:.6rem;display:inline-flex;align-items:center;gap:.4rem}
+.nav-navbtn:hover{color:var(--gold);border-color:rgba(200,151,58,0.12)}
+
+/* PAGES */
+.page{display:none}
+.page.active{display:block}
+
+/* HERO */
+.hero{background:var(--ink);padding:5rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;max-width:1200px;margin:0 auto}
+.hero-badge{display:inline-block;background:var(--gold-light);color:var(--gold);font-size:.75rem;letter-spacing:2px;text-transform:uppercase;padding:.3rem .8rem;border-radius:var(--radius);margin-bottom:1.2rem}
+.hero h1{color:var(--white);font-size:3.5rem;line-height:1.15;margin-bottom:1rem}
+.hero h1 em{color:var(--gold);font-style:italic}
+.hero p{color:var(--hero-text);font-size:1rem;line-height:1.7;margin-bottom:2rem}
+.hero-btns{display:flex;gap:1rem}
+.btn-primary{background:var(--gold);color:var(--ink);border:none;padding:.75rem 1.8rem;border-radius:var(--radius);font-family:var(--font-ui);font-size:.9rem;font-weight:500;cursor:pointer;transition:opacity .2s}
+.btn-primary:hover{opacity:.85}
+.btn-outline{background:transparent;color:var(--white);border:1px solid var(--muted-strong);padding:.75rem 1.8rem;border-radius:var(--radius);font-family:var(--font-ui);font-size:.9rem;font-weight:400;cursor:pointer;transition:border-color .2s,color .2s}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.hero-books{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;transform:perspective(800px) rotateY(-8deg)}
+.hero-book-cover{aspect-ratio:2/3;border-radius:var(--radius);background:linear-gradient(135deg,var(--gold-light),var(--cream));display:flex;align-items:flex-end;padding:.7rem;position:relative;overflow:hidden;cursor:pointer;transition:transform .3s}
+.hero-book-cover:hover{transform:translateY(-4px)}
+.hero-book-cover::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.5))}
+.hero-book-spine{position:absolute;left:0;top:0;bottom:0;width:12px;background:rgba(0,0,0,.25)}
+.hero-book-title{position:relative;color:var(--white);font-family:var(--font-display);font-size:.8rem;font-weight:600;line-height:1.3}
+
+/* HERO FULL BG */
+.hero-wrap{background:var(--ink)}
+
+/* STATS BAR */
+.stats-bar{background:var(--cream);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;justify-content:center;gap:3rem}
+.stat{text-align:center}
+.stat-num{font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:var(--ink)}
+.stat-label{font-size:.75rem;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+
+/* SECTION */
+.section{padding:3.5rem 2rem;max-width:1200px;margin:0 auto}
+.section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2rem}
+.section-title{font-size:2rem;color:var(--ink)}
+.section-link{font-size:.82rem;color:var(--gold);text-decoration:none;cursor:pointer;letter-spacing:.5px}
+.section-link:hover{text-decoration:underline}
+
+/* CATEGORIES */
+.categories-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem}
+.cat-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem 1rem;text-align:center;cursor:pointer;transition:border-color .2s,transform .2s}
+.cat-card:hover{border-color:var(--gold);transform:translateY(-2px)}
+.cat-icon{font-size:1.8rem;margin-bottom:.5rem}
+.cat-name{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--ink)}
+.cat-count{font-size:.75rem;color:var(--muted);margin-top:.2rem}
+
+/* BOOK CARDS */
+.books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1.5rem}
+.book-card{cursor:pointer;transition:transform .2s}
+.book-card:hover{transform:translateY(-4px)}
+.book-card:hover .book-cover-img{box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.book-cover-img{aspect-ratio:2/3;border-radius:var(--radius);overflow:hidden;position:relative;margin-bottom:.8rem}
+.book-cover-inner{width:100%;height:100%;display:flex;align-items:flex-end;padding:.8rem;position:relative}
+.book-cover-inner::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.6))}
+.book-spine{position:absolute;left:0;top:0;bottom:0;width:10px;filter:brightness(.7)}
+.book-cover-text{position:relative;z-index:1}
+.book-cover-title{font-family:var(--font-display);color:var(--white);font-size:.85rem;font-weight:600;line-height:1.3}
+.book-cover-author{font-size:.7rem;color:rgba(255,255,255,.75);margin-top:.2rem}
+.book-badge{position:absolute;top:.5rem;right:.5rem;background:var(--gold);color:var(--ink);font-size:.65rem;padding:.2rem .5rem;border-radius:var(--radius);font-weight:500;z-index:1}
+.book-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--ink);line-height:1.3}
+.book-author{font-size:.78rem;color:var(--muted);margin:.2rem 0}
+.book-stars{color:var(--gold);font-size:.75rem}
+.book-price{font-size:.95rem;font-weight:500;color:var(--ink);margin-top:.3rem}
+.book-price .original{color:var(--muted);text-decoration:line-through;font-size:.8rem;margin-right:.3rem;font-weight:400}
+
+/* BOOK DETAIL PAGE */
+.detail-wrap{max-width:1100px;margin:0 auto;padding:2.5rem 2rem}
+.detail-back{color:var(--muted);font-size:.82rem;cursor:pointer;display:flex;align-items:center;gap:.3rem;margin-bottom:2rem;transition:color .2s}
+.detail-back:hover{color:var(--gold)}
+.detail-grid{display:grid;grid-template-columns:280px 1fr;gap:3rem;align-items:start}
+.detail-cover{aspect-ratio:2/3;border-radius:var(--radius-lg);overflow:hidden;position:relative}
+.detail-cover-inner{width:100%;height:100%;display:flex;align-items:flex-end;padding:1.2rem}
+.detail-cover-inner::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,.7))}
+.detail-cover-spine{position:absolute;left:0;top:0;bottom:0;width:16px;filter:brightness(.6)}
+.detail-cover-text{position:relative;z-index:1}
+.detail-cover-title{font-family:var(--font-display);color:var(--white);font-size:1.1rem;font-weight:600;line-height:1.3}
+.detail-cover-author{font-size:.8rem;color:rgba(255,255,255,.75);margin-top:.3rem}
+.detail-info h1{font-size:2.4rem;line-height:1.2;margin-bottom:.4rem}
+.detail-author{font-size:1rem;color:var(--muted);margin-bottom:.8rem}
+.detail-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.detail-meta-tag{background:var(--cream);border:1px solid var(--border);color:var(--muted);font-size:.75rem;padding:.25rem .7rem;border-radius:var(--radius)}
+.detail-rating{display:flex;align-items:center;gap:.5rem;margin-bottom:1.2rem}
+.detail-rating .stars{color:var(--gold);font-size:1rem}
+.detail-rating .count{font-size:.82rem;color:var(--muted)}
+.detail-desc{font-size:.95rem;line-height:1.75;color:var(--body);margin-bottom:1.5rem}
+.detail-price-row{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem}
+.detail-price{font-family:var(--font-display);font-size:2.2rem;font-weight:600;color:var(--ink)}
+.detail-original{font-size:1rem;color:var(--muted);text-decoration:line-through}
+.detail-discount{background:var(--gold-light);color:var(--gold);font-size:.8rem;padding:.2rem .6rem;border-radius:var(--radius);font-weight:500}
+.detail-actions{display:flex;gap:1rem;margin-bottom:2rem}
+.btn-buy{background:var(--ink);color:var(--white);border:none;padding:.85rem 2rem;border-radius:var(--radius);font-family:var(--font-ui);font-size:.9rem;font-weight:500;cursor:pointer;flex:1;transition:background .2s}
+.btn-buy:hover{background:var(--ink-soft)}
+.btn-cart-add{background:var(--gold);color:var(--ink);border:none;padding:.85rem 2rem;border-radius:var(--radius);font-family:var(--font-ui);font-size:.9rem;font-weight:500;cursor:pointer;flex:1;transition:opacity .2s}
+.btn-cart-add:hover{opacity:.85}
+.detail-formats{display:flex;gap:.8rem;margin-bottom:2rem}
+.format-btn{background:var(--white);border:1px solid var(--border);padding:.4rem 1rem;border-radius:var(--radius);font-size:.8rem;cursor:pointer;transition:all .2s}
+.format-btn.active,.format-btn:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-light)}
+.preview-btn{background:transparent;border:1px solid var(--border);color:var(--muted);padding:.6rem 1.2rem;border-radius:var(--radius);font-size:.82rem;cursor:pointer;transition:all .2s}
+.preview-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+/* REVIEWS */
+.reviews-section{border-top:1px solid var(--border);padding-top:2rem;margin-top:2rem}
+.review-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem;margin-bottom:1rem}
+.review-top{display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem}
+.reviewer-avatar{width:36px;height:36px;border-radius:50%;background:var(--gold-light);display:flex;align-items:center;justify-content:center;font-weight:500;font-size:.85rem;color:var(--gold);flex-shrink:0}
+.reviewer-name{font-weight:500;font-size:.9rem}
+.reviewer-date{font-size:.75rem;color:var(--muted)}
+.review-stars{color:var(--gold);font-size:.8rem;margin:.1rem 0}
+.review-text{font-size:.88rem;color:var(--body);line-height:1.65}
+
+/* STORE PAGE */
+.store-layout{display:grid;grid-template-columns:220px 1fr;gap:2rem;padding:2rem;max-width:1200px;margin:0 auto}
+.filter-panel{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:sticky;top:80px;height:fit-content}
+.filter-title{font-family:var(--font-display);font-size:1.1rem;margin-bottom:1.2rem;padding-bottom:.8rem;border-bottom:1px solid var(--border)}
+.filter-group{margin-bottom:1.5rem}
+.filter-group-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:.7rem;font-weight:500}
+.filter-option{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;cursor:pointer;font-size:.88rem}
+.filter-option input{accent-color:var(--gold)}
+.price-range{display:flex;gap:.5rem;align-items:center}
+.price-input{width:80px;border:1px solid var(--border);border-radius:var(--radius);padding:.35rem .6rem;font-size:.82rem;font-family:var(--font-ui)}
+.filter-apply{width:100%;background:var(--ink);color:var(--white);border:none;padding:.7rem;border-radius:var(--radius);font-size:.85rem;cursor:pointer;font-family:var(--font-ui);margin-top:1rem;transition:opacity .2s}
+.filter-apply:hover{opacity:.8}
+.store-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.store-count{font-size:.85rem;color:var(--muted)}
+.sort-select{border:1px solid var(--border);border-radius:var(--radius);padding:.4rem .8rem;font-size:.82rem;font-family:var(--font-ui);background:var(--white);cursor:pointer}
+.search-wrap{position:relative;margin-bottom:1.5rem}
+.search-input{width:100%;border:1px solid var(--border);border-radius:var(--radius);padding:.65rem 1rem .65rem 2.5rem;font-size:.9rem;font-family:var(--font-ui);background:var(--white)}
+.search-input:focus{outline:none;border-color:var(--gold)}
+.search-icon{position:absolute;left:.8rem;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.9rem}
+
+/* CART */
+.cart-wrap{max-width:900px;margin:0 auto;padding:2.5rem 2rem}
+.cart-title{font-size:2rem;margin-bottom:2rem}
+.cart-grid{display:grid;grid-template-columns:1fr 340px;gap:2rem;align-items:start}
+.cart-item{display:flex;gap:1rem;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem;margin-bottom:1rem;align-items:center}
+.cart-item-cover{width:60px;height:90px;border-radius:var(--radius);overflow:hidden;flex-shrink:0}
+.cart-item-cover-inner{width:100%;height:100%;display:flex;align-items:flex-end;padding:.3rem;position:relative}
+.cart-item-cover-inner::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent,rgba(0,0,0,.5))}
+.cart-item-info{flex:1}
+.cart-item-title{font-family:var(--font-display);font-size:1rem;font-weight:600;margin-bottom:.2rem}
+.cart-item-author{font-size:.78rem;color:var(--muted);margin-bottom:.4rem}
+.cart-item-format{background:var(--cream);font-size:.7rem;padding:.2rem .5rem;border-radius:var(--radius);color:var(--muted);display:inline-block}
+.cart-item-price{font-weight:500;font-size:1rem;color:var(--ink)}
+.cart-remove{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.8rem;transition:color .2s}
+.cart-remove:hover{color:var(--danger)}
+.cart-summary{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;position:sticky;top:80px}
+.cart-summary h3{font-size:1.2rem;margin-bottom:1.2rem;padding-bottom:.8rem;border-bottom:1px solid var(--border)}
+.summary-row{display:flex;justify-content:space-between;font-size:.88rem;margin-bottom:.7rem;color:var(--muted)}
+.summary-row.total{font-size:1rem;font-weight:500;color:var(--ink);border-top:1px solid var(--border);padding-top:.8rem;margin-top:.5rem}
+.coupon-row{display:flex;gap:.5rem;margin:.8rem 0 1rem}
+.coupon-input{flex:1;border:1px solid var(--border);border-radius:var(--radius);padding:.45rem .7rem;font-size:.82rem;font-family:var(--font-ui)}
+.coupon-btn{background:var(--cream);border:1px solid var(--border);color:var(--ink);padding:.45rem .9rem;border-radius:var(--radius);font-size:.82rem;cursor:pointer}
+.checkout-btn{width:100%;background:var(--ink);color:var(--white);border:none;padding:.9rem;border-radius:var(--radius);font-family:var(--font-ui);font-size:.9rem;font-weight:500;cursor:pointer;transition:background .2s;margin-top:.5rem}
+.checkout-btn:hover{background:var(--ink-soft)}
+.checkout-note{font-size:.72rem;color:var(--muted);text-align:center;margin-top:.6rem}
+
+/* READER */
+.reader-wrap{max-width:800px;margin:0 auto;padding:2.5rem 2rem}
+.reader-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.reader-header h2{font-size:1.4rem}
+.reader-controls{display:flex;gap:.5rem}
+.reader-btn{background:var(--white);border:1px solid var(--border);padding:.4rem .8rem;border-radius:var(--radius);font-size:.8rem;cursor:pointer;transition:all .2s}
+.reader-btn:hover{border-color:var(--gold);color:var(--gold)}
+.reader-frame{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:3rem;min-height:600px;font-size:1rem;line-height:1.85;color:var(--body)}
+.reader-frame h3{font-family:var(--font-display);font-size:1.5rem;margin-bottom:1rem;color:var(--ink)}
+.reader-frame p{margin-bottom:1.2rem}
+.reader-page-nav{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:1.5rem}
+.reader-page-btn{background:var(--white);border:1px solid var(--border);padding:.5rem 1.2rem;border-radius:var(--radius);cursor:pointer;font-size:.85rem;transition:all .2s}
+.reader-page-btn:hover:not(:disabled){border-color:var(--gold);color:var(--gold)}
+.reader-page-btn:disabled{opacity:.4;cursor:default}
+.reader-page-info{font-size:.82rem;color:var(--muted)}
+
+/* LIBRARY */
+.library-wrap{max-width:1100px;margin:0 auto;padding:2.5rem 2rem}
+.library-title{font-size:2rem;margin-bottom:1.5rem}
+.library-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:2rem}
+.lib-tab{padding:.65rem 1.5rem;font-size:.85rem;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);transition:all .2s}
+.lib-tab.active{color:var(--ink);border-bottom-color:var(--gold);font-weight:500}
+.library-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem}
+.lib-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;transition:transform .2s}
+.lib-card:hover{transform:translateY(-3px)}
+.lib-cover{aspect-ratio:2/3;position:relative}
+.lib-cover-inner{width:100%;height:100%;display:flex;align-items:flex-end;padding:.8rem;position:relative}
+.lib-cover-inner::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,.7))}
+.lib-cover-text{position:relative;z-index:1}
+.lib-cover-title{font-family:var(--font-display);color:var(--white);font-size:.85rem;font-weight:600;line-height:1.3}
+.lib-actions{padding:.8rem;display:flex;gap:.5rem}
+.lib-btn{flex:1;padding:.45rem;border-radius:var(--radius);font-size:.75rem;font-family:var(--font-ui);cursor:pointer;text-align:center;transition:all .2s;border:1px solid var(--border);background:var(--white)}
+.lib-btn:hover{border-color:var(--gold);color:var(--gold)}
+.lib-btn.primary{background:var(--ink);color:var(--white);border-color:var(--ink)}
+.lib-btn.primary:hover{background:var(--ink-soft)}
+
+/* ADMIN */
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 64px)}
+.admin-gate{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:2rem;background:linear-gradient(135deg,var(--paper),var(--cream))}
+.admin-gate-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;width:100%;max-width:420px;box-shadow:0 20px 50px rgba(0,0,0,.06)}
+.admin-gate-card h2{font-size:1.6rem;margin:1rem 0 .5rem}
+.admin-gate-card p{color:var(--muted);font-size:.9rem;line-height:1.6}
+.admin-gate-badge{display:inline-flex;background:var(--gold-light);color:var(--gold);padding:.35rem .7rem;border-radius:999px;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.8px}
+.admin-sidebar{background:var(--ink);padding:1.5rem}
+.admin-sidebar h3{color:var(--gold);font-size:.75rem;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:1rem;margin-top:1.5rem;opacity:.7}
+.admin-sidebar h3:first-child{margin-top:0}
+.admin-nav-item{display:flex;align-items:center;gap:.6rem;color:var(--hero-text);font-size:.85rem;padding:.55rem .7rem;border-radius:var(--radius);cursor:pointer;transition:all .2s;margin-bottom:.1rem}
+.admin-nav-item:hover,.admin-nav-item.active{background:rgba(200,151,58,.15);color:var(--gold)}
+.admin-main{padding:2rem;background:var(--paper)}
+.admin-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem}
+.admin-topbar h2{font-size:1.6rem}
+.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem}
+.admin-stat{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem}
+.admin-stat-num{font-family:var(--font-display);font-size:2rem;font-weight:600}
+.admin-stat-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:.2rem}
+.admin-stat-change{font-size:.75rem;color:var(--success);margin-top:.4rem}
+.admin-table{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.admin-table-header{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.admin-table-header h3{font-size:1rem;font-weight:500}
+.admin-table table{width:100%;border-collapse:collapse}
+.admin-table th{background:var(--cream);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:.7rem 1.5rem;text-align:left;font-weight:500}
+.admin-table td{padding:.9rem 1.5rem;border-bottom:1px solid var(--border);font-size:.88rem}
+.admin-table tr:last-child td{border-bottom:none}
+.admin-table tr:hover td{background:var(--paper)}
+.status-pill{display:inline-block;padding:.2rem .6rem;border-radius:var(--radius);font-size:.72rem;font-weight:500}
+.status-active{background:var(--success-soft);color:var(--success)}
+.status-pending{background:var(--warning-soft);color:var(--warning)}
+.admin-btn{background:var(--gold);color:var(--ink);border:none;padding:.5rem 1.1rem;border-radius:var(--radius);font-size:.82rem;cursor:pointer;font-family:var(--font-ui);font-weight:500;transition:opacity .2s}
+.admin-btn:hover{opacity:.85}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem}
+.modal{background:var(--white);border-radius:var(--radius-lg);padding:2rem;width:100%;max-width:480px;position:relative;max-height:90vh;overflow-y:auto}
+.modal h2{font-size:1.6rem;margin-bottom:1.5rem}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--muted);width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background .2s}
+.modal-close:hover{background:var(--cream)}
+.form-group{margin-bottom:1.2rem}
+.form-label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.5px}
+.form-input{width:100%;border:1px solid var(--border);border-radius:var(--radius);padding:.65rem .9rem;font-size:.9rem;font-family:var(--font-ui);transition:border-color .2s}
+.form-input:focus{outline:none;border-color:var(--gold)}
+.form-divider{text-align:center;color:var(--muted);font-size:.82rem;margin:1rem 0;position:relative}
+.form-divider::before{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:var(--border)}
+.form-divider span{background:var(--white);padding:0 .8rem;position:relative}
+.btn-google{width:100%;background:var(--white);border:1px solid var(--border);padding:.65rem;border-radius:var(--radius);font-size:.88rem;cursor:pointer;font-family:var(--font-ui);transition:border-color .2s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.btn-google:hover{border-color:var(--gold)}
+.btn-full{width:100%;margin-top:.5rem}
+.modal-link{font-size:.82rem;color:var(--gold);cursor:pointer;text-align:center;display:block;margin-top:.8rem}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--ink);color:var(--white);padding:.8rem 1.5rem;border-radius:var(--radius);font-size:.88rem;z-index:999;transform:translateY(100px);opacity:0;transition:all .3s;max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-left:3px solid var(--gold)}
+
+/* FOOTER */
+footer{background:var(--ink);color:var(--footer-text);padding:3rem 2rem 2rem;margin-top:4rem}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem;max-width:1200px;margin:0 auto 2rem}
+.footer-brand{font-family:var(--font-display);color:var(--gold);font-size:1.4rem;margin-bottom:.7rem}
+.footer-tagline{font-size:.82rem;line-height:1.65;color:var(--footer-link)}
+.footer-heading{font-size:.72rem;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin-bottom:.8rem}
+.footer-links{list-style:none}
+.footer-links li{margin-bottom:.5rem}
+.footer-links a{color:var(--footer-link);font-size:.82rem;text-decoration:none;cursor:pointer;transition:color .2s}
+.footer-links a:hover{color:var(--gold)}
+.footer-bottom{border-top:1px solid var(--footer-divider);padding-top:1.5rem;text-align:center;font-size:.75rem;color:var(--footer-bottom);max-width:1200px;margin:0 auto}
+
+/* UTILS */
+.empty-state{text-align:center;padding:4rem 2rem;color:var(--muted)}
+.empty-state h3{font-size:1.4rem;margin-bottom:.5rem}
+.empty-state p{font-size:.88rem}
+.hidden{display:none!important}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero{grid-template-columns:1fr;gap:2rem}
+  .hero-books{display:none}
+  .hero h1{font-size:2.4rem}
+  .detail-grid{grid-template-columns:1fr}
+  .cart-grid{grid-template-columns:1fr}
+  .admin-layout{grid-template-columns:1fr}
+  .admin-sidebar{display:none}
+  .store-layout{grid-template-columns:1fr}
+  .filter-panel{display:none}
+  .admin-stats{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .stats-bar{gap:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div style="display:flex;align-items:center;gap:.6rem">
+    <button class="nav-navbtn" title="Back" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i></button>
+    <button class="nav-navbtn" title="Forward" onclick="goForward()"><i class="fa-solid fa-arrow-right"></i></button>
+    <div class="nav-brand" onclick="showPage('home')">Mindforge</div>
+  </div>
+  <div class="nav-links">
+    <a onclick="showPage('store')">Browse</a>
+    <a onclick="showPage('library')">My Library</a>
+    
+  </div>
+  <div class="nav-right">
+    <span class="nav-icon" onclick="showModal('loginModal')">Sign In</span>
+    <button class="cart-btn" onclick="showPage('cart')">
+      <span class="icon-inline"><i class="fa-solid fa-cart-shopping"></i> Cart</span> <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- ======== HOME PAGE ======== -->
+<div id="page-home" class="page active">
+  <div class="hero-wrap">
+    <div class="hero">
+      <div>
+        
+        <h1>Your next great read,<br/><em>delivered instantly.</em></h1>
+        <p>Premium e-books. Preview in your browser and unlock the full book after purchase. One purchase, yours for life.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="showPage('store')">Browse Books</button>
+          <button class="btn-outline" onclick="showModal('loginModal')">Get Started Free</button>
+        </div>
+      </div>
+      <div class="hero-books" id="heroBooksDisplay"></div>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-num">2,400+</div><div class="stat-label">Books Available</div></div>
+    <div class="stat"><div class="stat-num">18K+</div><div class="stat-label">Happy Readers</div></div>
+    <div class="stat"><div class="stat-num">95+</div><div class="stat-label">Categories</div></div>
+    <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">Avg Rating</div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title">Browse by Category</h2>
+    </div>
+    <div class="categories-grid" id="categoriesGrid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title">Bestsellers</h2>
+      <span class="section-link icon-inline" onclick="showPage('store')">View all <i class="fa-solid fa-arrow-right"></i></span>
+    </div>
+    <div class="books-grid" id="featuredBooksGrid"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title">New Arrivals</h2>
+      <span class="section-link icon-inline" onclick="showPage('store')">View all <i class="fa-solid fa-arrow-right"></i></span>
+    </div>
+    <div class="books-grid" id="newBooksGrid"></div>
+  </div>
+
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Mindforge</div>
+        <p class="footer-tagline">Your trusted digital bookstore. Premium e-books, instant delivery, lifetime access.</p>
+      </div>
+      <div>
+        <div class="footer-heading">Store</div>
+        <ul class="footer-links">
+          <li><a onclick="showPage('store')">All Books</a></li>
+          <li><a>Bestsellers</a></li>
+          <li><a>New Arrivals</a></li>
+          <li><a>Deals</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Account</div>
+        <ul class="footer-links">
+          <li><a onclick="showModal('loginModal')">Sign In</a></li>
+          <li><a onclick="showPage('library')">My Library</a></li>
+          <li><a>Orders</a></li>
+          <li><a onclick="showPage('library')">Wishlist</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Support</div>
+        <ul class="footer-links">
+          <li><a>FAQ</a></li>
+          <li><a>Contact Us</a></li>
+          <li><a>Refund Policy</a></li>
+          <li><a>Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 PageVault. All rights reserved. Secure payments powered by Razorpay.</div>
+  </footer>
+</div>
+
+<!-- ======== STORE PAGE ======== -->
+<div id="page-store" class="page">
+  <div class="store-layout">
+    <div class="filter-panel">
+      <div class="filter-title">Filters</div>
+      <div class="filter-group">
+        <div class="filter-group-label">Genre</div>
+        <label class="filter-option"><input type="checkbox" checked/> All</label>
+        <label class="filter-option"><input type="checkbox"/> Fiction</label>
+        <label class="filter-option"><input type="checkbox"/> Non-Fiction</label>
+        <label class="filter-option"><input type="checkbox"/> Business</label>
+        <label class="filter-option"><input type="checkbox"/> Self-Help</label>
+        <label class="filter-option"><input type="checkbox"/> Science</label>
+        <label class="filter-option"><input type="checkbox"/> History</label>
+        <label class="filter-option"><input type="checkbox"/> Technology</label>
+      </div>
+      <div class="filter-group">
+        <div class="filter-group-label">Price Range (₹)</div>
+        <div class="price-range">
+          <input class="price-input" type="number" placeholder="0" value="0"/>
+          <span>–</span>
+          <input class="price-input" type="number" placeholder="999" value="999"/>
+        </div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-group-label">Rating</div>
+        <label class="filter-option"><input type="radio" name="rating" checked/> Any</label>
+        <label class="filter-option"><input type="radio" name="rating"/> 4★ & above</label>
+        <label class="filter-option"><input type="radio" name="rating"/> 4.5★ & above</label>
+      </div>
+      <div class="filter-group">
+        <div class="filter-group-label">Format</div>
+        <label class="filter-option"><input type="checkbox" checked/> PDF</label>
+        <label class="filter-option"><input type="checkbox" checked/> EPUB</label>
+      </div>
+      <button class="filter-apply">Apply Filters</button>
+    </div>
+    <div class="store-main">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-input" type="text" id="searchInput" placeholder="Search by title, author, or keyword…" oninput="filterBooks()"/>
+      </div>
+      <div class="store-topbar">
+        <span class="store-count" id="storeCount">Showing 12 books</span>
+        <select class="sort-select" onchange="sortBooks(this.value)">
+          <option value="popular">Most Popular</option>
+          <option value="newest">Newest First</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+        </select>
+      </div>
+      <div class="books-grid" id="storeBooksGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== BOOK DETAIL PAGE ======== -->
+<div id="page-detail" class="page">
+  <div class="detail-wrap">
+    <div class="detail-back icon-inline" onclick="showPage('store')"><i class="fa-solid fa-arrow-left"></i> Back to Store</div>
+    <div class="detail-grid" id="bookDetailContent"></div>
+    <div class="reviews-section">
+      <h3 style="font-size:1.4rem;margin-bottom:1.2rem">Reader Reviews</h3>
+      <div id="reviewsList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== CART PAGE ======== -->
+<div id="page-cart" class="page">
+  <div class="cart-wrap">
+    <h1 class="cart-title">Shopping Cart</h1>
+    <div id="cartContent"></div>
+  </div>
+</div>
+
+<!-- ======== LIBRARY PAGE ======== -->
+<div id="page-library" class="page">
+  <div class="library-wrap">
+    <h1 class="library-title">My Library</h1>
+    <div class="library-tabs">
+      <div class="lib-tab active" onclick="switchLibTab(this,'purchased')">Purchased (3)</div>
+      <div class="lib-tab" onclick="switchLibTab(this,'wishlist')">Wishlist (5)</div>
+      <div class="lib-tab" onclick="switchLibTab(this,'reading')">Currently Reading</div>
+    </div>
+    <div class="library-grid" id="libraryGrid"></div>
+  </div>
+</div>
+
+<!-- ======== READER PAGE ======== -->
+<div id="page-reader" class="page">
+  <div class="reader-wrap">
+    <div class="reader-header">
+      <div class="detail-back icon-inline" onclick="showPage('library')" style="margin:0"><i class="fa-solid fa-arrow-left"></i> Back to Library</div>
+      <h2 id="readerTitle">Book Title</h2>
+      <div class="reader-controls">
+        <button class="reader-btn" onclick="changeFontSize(-1)">A−</button>
+        <button class="reader-btn" onclick="changeFontSize(1)">A+</button>
+        <button class="reader-btn icon-inline"><i class="fa-regular fa-bookmark"></i> Bookmark</button>
+      </div>
+    </div>
+    <div class="reader-frame" id="readerContent"></div>
+    <div class="reader-page-nav">
+      <button class="reader-page-btn icon-inline" id="prevPage" onclick="changePage(-1)" disabled><i class="fa-solid fa-arrow-left"></i> Previous</button>
+      <span class="reader-page-info" id="pageInfo">Page 1 of 5</span>
+      <button class="reader-page-btn icon-inline" id="nextPage" onclick="changePage(1)">Next <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- ======== ADMIN PAGE ======== -->
+<div id="page-admin" class="page">
+  <div class="admin-gate" id="adminGate">
+    <div class="admin-gate-card">
+      <div class="admin-gate-badge icon-inline"><i class="fa-solid fa-lock"></i> Admin Access</div>
+      <h2>Enter PIN to continue</h2>
+      <p>This section is locked behind the /admin route and a 4-digit PIN.</p>
+      <div class="form-group">
+        <label class="form-label">PIN</label>
+        <input class="form-input" id="adminPinInput" type="password" inputmode="numeric" maxlength="4" placeholder="1234" onkeydown="handleAdminPinKey(event)"/>
+      </div>
+      <button class="btn-primary btn-full" onclick="unlockAdmin()">Unlock Admin</button>
+      <p class="checkout-note" style="margin-top:.8rem">Route: /admin · PIN: 1234</p>
+    </div>
+  </div>
+  <div class="admin-layout hidden" id="adminLayout">
+    <div class="admin-sidebar">
+      <div class="admin-nav-item active icon-inline" onclick="adminSection('dashboard',this)"><i class="fa-solid fa-chart-column"></i> Dashboard</div>
+      <div class="admin-nav-item icon-inline" onclick="adminSection('books',this)"><i class="fa-solid fa-book"></i> Books</div>
+      <div class="admin-nav-item icon-inline" onclick="adminSection('orders',this)"><i class="fa-solid fa-basket-shopping"></i> Orders</div>
+      <div class="admin-nav-item icon-inline" onclick="adminSection('users',this)"><i class="fa-solid fa-user-group"></i> Users</div>
+      <div class="admin-nav-item icon-inline" onclick="adminSection('coupons',this)"><i class="fa-solid fa-ticket"></i> Coupons</div>
+      <h3>Settings</h3>
+      <div class="admin-nav-item icon-inline" onclick="showPage('store')"><i class="fa-solid fa-arrow-left"></i> Back to Store</div>
+    </div>
+    <div class="admin-main" id="adminMain"></div>
+  </div>
+</div>
+
+<!-- ======== MODALS ======== -->
+<div class="modal-overlay hidden" id="loginModal" onclick="closeModalOutside(event,'loginModal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')"><i class="fa-solid fa-xmark"></i></button>
+    <h2>Welcome back</h2>
+    <button class="btn-google icon-inline">
+      <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+    </button>
+    <div class="form-divider"><span>or</span></div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" placeholder="you@example.com"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input class="form-input" type="password" placeholder="••••••••"/>
+    </div>
+    <button class="btn-primary btn-full" onclick="closeModal('loginModal');showToast('Signed in successfully! 👋')">Sign In</button>
+    <span class="modal-link">Don't have an account? Create one free</span>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="previewModal" onclick="closeModalOutside(event,'previewModal')">
+  <div class="modal" style="max-width:640px">
+    <button class="modal-close" onclick="closeModal('previewModal')"><i class="fa-solid fa-xmark"></i></button>
+    <h2 id="previewTitle">Sample Preview</h2>
+    <div style="background:var(--cream);border-radius:var(--radius);padding:1.5rem;margin-top:1rem;font-size:.92rem;line-height:1.8;color:var(--body);max-height:400px;overflow-y:auto" id="previewContent"></div>
+    <p style="font-size:.8rem;color:var(--muted);margin-top:1rem;text-align:center">This is a sample preview — purchase to read the full book.</p>
+    <button class="btn-primary btn-full icon-inline" style="margin-top:.8rem" onclick="closeModal('previewModal')"><i class="fa-solid fa-lock"></i> Buy Full Book</button>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="addBookModal" onclick="closeModalOutside(event,'addBookModal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('addBookModal')"><i class="fa-solid fa-xmark"></i></button>
+    <h2>Add New Book</h2>
+    <div class="form-group">
+      <label class="form-label">Title</label>
+      <input class="form-input" type="text" placeholder="Book title"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Author</label>
+      <input class="form-input" type="text" placeholder="Author name"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Genre</label>
+      <select class="form-input">
+        <option>Fiction</option><option>Non-Fiction</option><option>Business</option><option>Self-Help</option><option>Science</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Price (₹)</label>
+      <input class="form-input" type="number" placeholder="299"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <textarea class="form-input" rows="3" placeholder="Book description…" style="resize:vertical"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Upload PDF / EPUB</label>
+      <input class="form-input" id="fileInput" type="file" accept=".pdf,.epub"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Cover Image (optional)</label>
+      <input class="form-input" id="coverInput" type="file" accept="image/*"/>
+    </div>
+    <button class="btn-primary btn-full icon-inline" onclick="addBook()"><i class="fa-solid fa-circle-plus"></i> Add Book</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA =====
+const COLORS = [
+  ['#1f2f28','#5f8b73'],['#232d3a','#647f9c'],['#2f261e','#8f6f52'],
+  ['#273033','#5f868e'],['#2e2a24','#8f816a'],['#2a2520','#8f6a53'],
+  ['#283125','#6d8b61'],['#2c2b34','#7a7f97']
+];
+
+const BOOKS = [
+  {id:1,title:'The Midnight Library',author:'Matt Haig',genre:'Fiction',price:299,original:399,rating:4.8,reviews:1243,badge:'Bestseller',pages:304,desc:'Between life and death there is a library, and within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived.',color:0,year:2023},
+  {id:2,title:'Atomic Habits',author:'James Clear',genre:'Self-Help',price:349,original:499,rating:4.9,reviews:8421,badge:'Top Rated',pages:320,desc:'No matter your goals, Atomic Habits offers a proven framework for improving—every day. Transform your daily habits and compound your results tenfold.',color:1,year:2022},
+  {id:3,title:'Sapiens',author:'Yuval Noah Harari',genre:'History',price:399,original:null,rating:4.7,reviews:5632,badge:null,pages:512,desc:'A brief history of humankind from the Stone Age to the present day. A landmark work that challenges everything we thought we knew about being human.',color:2,year:2023},
+  {id:4,title:'Deep Work',author:'Cal Newport',genre:'Business',price:279,original:399,rating:4.6,reviews:3201,badge:'Sale',pages:296,desc:'Deep work is the ability to focus without distraction on a cognitively demanding task. Learn the rules for thriving in the new economy.',color:3,year:2022},
+  {id:5,title:'The Alchemist',author:'Paulo Coelho',genre:'Fiction',price:199,original:299,rating:4.7,reviews:9874,badge:'Classic',pages:208,desc:'A novel about following your dreams. Santiago, an Andalusian shepherd boy, journeys to Egypt\'s pyramids in search of treasure.',color:4,year:2023},
+  {id:6,title:'A Brief History of Time',author:'Stephen Hawking',genre:'Science',price:329,original:null,rating:4.5,reviews:4123,badge:null,pages:212,desc:'A landmark volume in science writing by one of the great minds of our time that makes the cosmos accessible to the nonscientist.',color:5,year:2022},
+  {id:7,title:'Zero to One',author:'Peter Thiel',genre:'Business',price:299,original:399,rating:4.6,reviews:2891,badge:null,pages:224,desc:'The next Bill Gates will not build an operating system. Every moment in business happens only once. The next Mark Zuckerberg won\'t create a social network.',color:6,year:2023},
+  {id:8,title:'Think and Grow Rich',author:'Napoleon Hill',genre:'Self-Help',price:149,original:249,rating:4.4,reviews:6541,badge:'Classic',pages:320,desc:'This book has been called the "Granddaddy of All Motivational Literature." It was the first book to boldly ask, What makes a winner?',color:7,year:2022},
+  {id:9,title:'Dune',author:'Frank Herbert',genre:'Fiction',price:449,original:599,rating:4.9,reviews:3241,badge:'Award Winner',pages:688,desc:'Set in the distant future amidst a feudal interstellar society in which various noble houses control planetary fiefs.',color:0,year:2024},
+  {id:10,title:'The Psychology of Money',author:'Morgan Housel',genre:'Business',price:289,original:399,rating:4.8,reviews:4521,badge:'Trending',pages:256,desc:'Timeless lessons on wealth, greed, and happiness. Doing well with money isn\'t necessarily about what you know.',color:1,year:2024},
+  {id:11,title:'Cosmos',author:'Carl Sagan',genre:'Science',price:359,original:null,rating:4.8,reviews:2134,badge:null,pages:365,desc:'Cosmos is one of the bestselling science books of all time. In clear-eyed prose, Sagan reveals our planet\'s place in the universe.',color:2,year:2024},
+  {id:12,title:'Rich Dad Poor Dad',author:'Robert Kiyosaki',genre:'Business',price:229,original:329,rating:4.5,reviews:7823,badge:null,pages:336,desc:'Rich Dad Poor Dad is Robert\'s story of growing up with two dads and the ways in which both men shaped his thoughts about money and investing.',color:3,year:2023},
+];
+
+const REVIEWS = [
+  {name:'Priya S.',rating:5,date:'Dec 2024',text:'Absolutely loved this book. The writing is stunning and the concept is brilliantly executed. One of the best reads of the year!'},
+  {name:'Rahul M.',rating:4,date:'Nov 2024',text:'Great read overall. Very well written and thought-provoking. Downloaded the PDF and the formatting is clean.'},
+  {name:'Ananya K.',rating:5,date:'Oct 2024',text:'The in-browser reader worked perfectly on my iPad. Finished the whole thing in two sittings. Highly recommend!'},
+];
+
+const CATEGORIES = [
+  {name:'Fiction',icon:'openBook',count:342},{name:'Business',icon:'chart',count:218},
+  {name:'Self-Help',icon:'star',count:189},{name:'Science',icon:'book',count:156},
+  {name:'History',icon:'shield',count:134},{name:'Technology',icon:'book',count:98},
+  {name:'Biography',icon:'users',count:87},{name:'Philosophy',icon:'book',count:76},
+];
+
+let cart = [];
+let currentPage = 'home';
+let currentBook = null;
+let readerPage = 1;
+let readerFontSize = 16;
+let displayedBooks = [...BOOKS];
+let adminUnlocked = sessionStorage.getItem('pagevault-admin-unlocked') === '1';
+const ADMIN_PIN = '1234';
+const PURCHASED_BOOK_IDS = new Set([1,2,3]);
+
+const ICONS = {
+  book: 'fa-solid fa-book',
+  cart: 'fa-solid fa-cart-shopping',
+  sparkles: 'fa-solid fa-sparkles',
+  star: 'fa-solid fa-star',
+  arrowRight: 'fa-solid fa-arrow-right',
+  arrowLeft: 'fa-solid fa-arrow-left',
+  lock: 'fa-solid fa-lock',
+  eye: 'fa-regular fa-eye',
+  heart: 'fa-regular fa-heart',
+  bookmark: 'fa-regular fa-bookmark',
+  plus: 'fa-solid fa-circle-plus',
+  trash: 'fa-solid fa-trash',
+  download: 'fa-solid fa-download',
+  shoppingBag: 'fa-solid fa-basket-shopping',
+  users: 'fa-solid fa-user-group',
+  chart: 'fa-solid fa-chart-column',
+  ticket: 'fa-solid fa-ticket',
+  xmark: 'fa-solid fa-xmark',
+  shield: 'fa-solid fa-shield-halved',
+  bolt: 'fa-solid fa-bolt',
+  rotateLeft: 'fa-solid fa-rotate-left',
+  openBook: 'fa-solid fa-book-open'
+};
+
+function iconHTML(name){
+  return `<i class="${ICONS[name] || name}"></i>`;
+}
+
+// ===== ADMIN / BOOK HELPERS =====
+function addBook(){
+  const title = document.querySelector('#addBookModal .form-input[type="text"]')?.value || document.querySelector('#addBookModal .form-input')?.value;
+  const titleInput = document.querySelector('#addBookModal input[placeholder="Book title"]');
+  const authorInput = document.querySelector('#addBookModal input[placeholder="Author name"]');
+  const genreSelect = document.querySelector('#addBookModal select');
+  const priceInput = document.querySelector('#addBookModal input[type="number"]');
+  const descInput = document.querySelector('#addBookModal textarea');
+  const fileInput = document.getElementById('fileInput');
+  const coverInput = document.getElementById('coverInput');
+  const titleVal = titleInput ? titleInput.value.trim() : '';
+  const authorVal = authorInput ? authorInput.value.trim() : 'Unknown';
+  const genreVal = genreSelect ? genreSelect.value : 'General';
+  const priceVal = priceInput ? Number(priceInput.value||0) : 0;
+  const descVal = descInput ? descInput.value.trim() : '';
+  if(!titleVal){ showToast('Please enter a title'); return; }
+  const newId = BOOKS.reduce((m,b)=>Math.max(m,b.id),0)+1;
+  const newBook = {id:newId,title:titleVal,author:authorVal,genre:genreVal,price:priceVal,original:null,rating:4.5,reviews:0,badge:null,pages:120,desc:descVal,color:newId%COLORS.length,year:new Date().getFullYear()};
+
+  function finalize(){
+    BOOKS.unshift(newBook);
+    closeModal('addBookModal');
+    renderStore();
+    renderHome();
+    renderAdmin('books');
+    showToast('Book added successfully!');
+  }
+
+  if(coverInput && coverInput.files && coverInput.files[0]){
+    const f = coverInput.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e){ newBook.cover = e.target.result; finalize(); };
+    reader.readAsDataURL(f);
+  } else {
+    finalize();
+  }
+}
+
+// ===== RENDER HELPERS =====
+function bookCoverHTML(book, size='md'){
+  if(book.cover){
+    const h = size==='sm'?'100%':'100%';
+    return `<div style="width:100%;height:${h};display:flex;align-items:flex-end;position:relative;overflow:hidden;border-radius:6px">
+      <img src="${book.cover}" alt="${book.title} cover" style="width:100%;height:100%;object-fit:cover;display:block"/>
+    </div>`;
+  }
+  const [bg,accent] = COLORS[book.color % COLORS.length];
+  const h = size==='sm'?'100%':'100%';
+  return `<div style="width:100%;height:${h};background:${bg};display:flex;align-items:center;justify-content:center;position:relative;padding:0;overflow:hidden;border-radius:6px">
+    <div style="width:60%;height:60%;opacity:0.95;display:flex;align-items:center;justify-content:center">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+        <g stroke="rgba(255,255,255,0.95)" stroke-width="2" fill="none" stroke-linejoin="round">
+          <path d="M10 8h36v48H10z"/>
+          <path d="M46 8v48"/>
+          <path d="M14 20h28"/>
+          <path d="M14 30h28"/>
+          <path d="M14 40h28"/>
+        </g>
+      </svg>
+    </div>
+    <div style="position:absolute;top:.5rem;right:.5rem;width:40%;height:40%;background:${accent};opacity:.18;border-radius:50%"></div>
+  </div>`;
+}
+
+function starsHTML(rating){
+  const full = Math.floor(rating);
+  const half = rating % 1 >= .5 ? 1 : 0;
+  return '★'.repeat(full) + (half?'½':'') + '☆'.repeat(5-full-half);
+}
+
+function renderBookCard(book){
+  const el = document.createElement('div');
+  el.className = 'book-card';
+  el.onclick = () => showBookDetail(book);
+  el.innerHTML = `
+    <div class="book-cover-img">
+      <div class="book-cover-inner">${bookCoverHTML(book)}</div>
+      ${book.badge?`<span class="book-badge">${book.badge}</span>`:''}
+    </div>
+    <div class="book-info">
+      <div class="book-title">${book.title}</div>
+      <div class="book-author">${book.author}</div>
+      <div class="book-stars">${starsHTML(book.rating)} <span style="color:var(--muted);font-size:.72rem">(${book.reviews.toLocaleString()})</span></div>
+      <div class="book-price">${book.original?`<span class="original">₹${book.original}</span>`:''}₹${book.price}</div>
+    </div>`;
+  return el;
+}
+
+// ===== PAGE NAVIGATION =====
+const NAV_PAGES = new Set(['home','store','cart','library','reader','admin']);
+
+function pageHash(name){
+  return `#/${name}`;
+}
+
+function showPage(name, opts={}){
+  const push = opts.push !== false;
+  const section = opts.section || 'dashboard';
+
+  if(push){
+    const state = {page:name};
+    const url = name === 'admin' ? '/admin' : pageHash(name);
+    try { history.pushState(state, '', url); } catch (error) {}
+  }
+
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  currentPage = name;
+  window.scrollTo(0,0);
+  if(name==='home') renderHome();
+  if(name==='store') renderStore();
+  if(name==='cart') renderCart();
+  if(name==='library') renderLibrary();
+  if(name==='admin') renderAdmin(section);
+}
+
+function goAdmin(){
+  showPage('admin');
+}
+
+function goBack(){
+  try{
+    if(window.history.length>1){ history.back(); }
+    else { showToast('No previous page in history'); }
+  }catch(e){ showToast('Cannot navigate back'); }
+}
+
+function goForward(){
+  try{
+    history.forward();
+  }catch(e){ showToast('Cannot navigate forward'); }
+}
+
+function showAdminGate(){
+  const gate = document.getElementById('adminGate');
+  const layout = document.getElementById('adminLayout');
+  if(gate) gate.classList.remove('hidden');
+  if(layout) layout.classList.add('hidden');
+}
+
+function unlockAdmin(){
+  const input = document.getElementById('adminPinInput');
+  if(!input) return;
+  if(input.value.trim() === ADMIN_PIN){
+    adminUnlocked = true;
+    sessionStorage.setItem('pagevault-admin-unlocked','1');
+    document.getElementById('adminGate').classList.add('hidden');
+    document.getElementById('adminLayout').classList.remove('hidden');
+    renderAdmin('dashboard');
+    showToast('Admin unlocked');
+  } else {
+    showToast('Incorrect PIN');
+    input.value = '';
+    input.focus();
+  }
+}
+
+function handleAdminPinKey(event){
+  if(event.key === 'Enter') unlockAdmin();
+}
+
+function syncRoute(){
+  const state = history.state;
+  if(state && state.page === 'detail' && state.bookId){
+    const book = BOOKS.find(b=>b.id===state.bookId);
+    if(book){
+      showBookDetail(book, {push:false});
+      return;
+    }
+  }
+
+  if(state && state.page && NAV_PAGES.has(state.page)){
+    showPage(state.page, {push:false, section: state.section || 'dashboard'});
+    return;
+  }
+
+  const isAdminRoute = location.pathname === '/admin' || location.pathname.endsWith('/admin') || location.hash === '#/admin';
+  if(isAdminRoute){
+    showPage('admin', {push:false});
+    return;
+  }
+
+  if(location.hash.startsWith('#/book/')){
+    const id = Number(location.hash.split('/').pop());
+    const book = BOOKS.find(b=>b.id===id);
+    if(book){
+      showBookDetail(book, {push:false});
+      return;
+    }
+  }
+
+  if(location.hash.startsWith('#/')){
+    const maybePage = location.hash.slice(2);
+    if(NAV_PAGES.has(maybePage)){
+      showPage(maybePage, {push:false});
+      return;
+    }
+  }
+
+  showPage('home', {push:false});
+}
+
+// ===== HOME =====
+function renderHome(){
+  // Hero books
+  const hb = document.getElementById('heroBooksDisplay');
+  hb.innerHTML='';
+  [BOOKS[0],BOOKS[1],BOOKS[4]].forEach((b,index)=>{
+    const [bg] = COLORS[b.color%COLORS.length];
+    hb.innerHTML += `<div class="hero-book-cover" style="background:${bg}" onclick="showBookDetail(BOOKS[[0,1,4][${index}]])">
+      <div class="hero-book-spine"></div>
+    </div>`;
+  });
+
+  // Categories
+  const cg = document.getElementById('categoriesGrid');
+  cg.innerHTML = CATEGORIES.map(c=>`
+    <div class="cat-card" onclick="showPage('store')">
+      <div class="cat-icon icon-inline">${iconHTML(c.icon)}</div>
+      <div class="cat-name">${c.name}</div>
+      <div class="cat-count">${c.count} books</div>
+    </div>`).join('');
+
+  // Featured
+  const fg = document.getElementById('featuredBooksGrid');
+  fg.innerHTML='';
+  BOOKS.slice(0,6).forEach(b=>fg.appendChild(renderBookCard(b)));
+
+  // New
+  const ng = document.getElementById('newBooksGrid');
+  ng.innerHTML='';
+  BOOKS.filter(b=>b.year===2024).concat(BOOKS.slice(6,10)).slice(0,4).forEach(b=>ng.appendChild(renderBookCard(b)));
+}
+
+// ===== STORE =====
+function renderStore(){
+  displayedBooks = [...BOOKS];
+  renderStoreGrid();
+}
+function renderStoreGrid(){
+  const grid = document.getElementById('storeBooksGrid');
+  grid.innerHTML='';
+  displayedBooks.forEach(b=>grid.appendChild(renderBookCard(b)));
+  document.getElementById('storeCount').textContent=`Showing ${displayedBooks.length} books`;
+}
+function filterBooks(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  displayedBooks = BOOKS.filter(b=>
+    b.title.toLowerCase().includes(q)||b.author.toLowerCase().includes(q)||b.genre.toLowerCase().includes(q)
+  );
+  renderStoreGrid();
+}
+function sortBooks(val){
+  if(val==='newest') displayedBooks.sort((a,b)=>b.year-a.year);
+  if(val==='price-low') displayedBooks.sort((a,b)=>a.price-b.price);
+  if(val==='price-high') displayedBooks.sort((a,b)=>b.price-a.price);
+  if(val==='rating') displayedBooks.sort((a,b)=>b.rating-a.rating);
+  if(val==='popular') displayedBooks.sort((a,b)=>b.reviews-a.reviews);
+  renderStoreGrid();
+}
+
+// ===== BOOK DETAIL =====
+function showBookDetail(book, opts={}){
+  const push = opts.push !== false;
+  currentBook = book;
+  showPage('detail', {push:false});
+  if(push){
+    try { history.pushState({page:'detail', bookId:book.id}, '', `#/book/${book.id}`); } catch (error) {}
+  }
+  const [bg] = COLORS[book.color%COLORS.length];
+  document.getElementById('bookDetailContent').innerHTML = `
+    <div>
+      <div class="detail-cover" style="background:${bg}">
+        <div class="detail-cover-inner">
+          ${bookCoverHTML(book,'lg')}
+        </div>
+        ${book.badge?`<span class="book-badge">${book.badge}</span>`:''}
+      </div>
+      <div style="margin-top:1rem;display:flex;gap:.5rem">
+        <button class="preview-btn icon-inline" style="flex:1" onclick="showPreview()">${iconHTML('eye')} Preview</button>
+        <button class="preview-btn icon-inline" style="flex:1">${iconHTML('heart')} Wishlist</button>
+      </div>
+      <div style="margin-top:1rem;background:var(--cream);border-radius:var(--radius);padding:1rem;font-size:.82rem;color:var(--muted)">
+        <div style="display:flex;justify-content:space-between;margin-bottom:.4rem"><span>Format</span><span style="color:var(--ink)">PDF + EPUB</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:.4rem"><span>Pages</span><span style="color:var(--ink)">${book.pages}</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:.4rem"><span>Language</span><span style="color:var(--ink)">English</span></div>
+        <div style="display:flex;justify-content:space-between"><span>Access</span><span style="color:var(--ink)">Lifetime</span></div>
+      </div>
+    </div>
+    <div class="detail-info">
+      <h1>${book.title}</h1>
+      <div class="detail-author">by ${book.author}</div>
+      <div class="detail-meta">
+        <span class="detail-meta-tag">${book.genre}</span>
+        <span class="detail-meta-tag">${book.pages} pages</span>
+        <span class="detail-meta-tag">PDF & EPUB</span>
+        <span class="detail-meta-tag">Lifetime access</span>
+      </div>
+      <div class="detail-rating">
+        <span class="stars">${starsHTML(book.rating)}</span>
+        <span style="font-weight:500">${book.rating}</span>
+        <span class="count">(${book.reviews.toLocaleString()} reviews)</span>
+      </div>
+      <p class="detail-desc">${book.desc}</p>
+      <div class="detail-price-row">
+        <span class="detail-price">₹${book.price}</span>
+        ${book.original?`<span class="detail-original">₹${book.original}</span><span class="detail-discount">${Math.round((1-book.price/book.original)*100)}% OFF</span>`:''}
+      </div>
+      <div style="margin-bottom:1rem">
+        <div style="font-size:.8rem;color:var(--muted);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.5px">Choose Format</div>
+        <div class="detail-formats">
+          <button class="format-btn icon-inline"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+          <button class="format-btn icon-inline" onclick="toggleFormat(this)"><i class="fa-solid fa-tablet-screen-button"></i> EPUB</button>
+          <button class="format-btn icon-inline" onclick="toggleFormat(this)"><i class="fa-solid fa-box-open"></i> Both (+₹30)</button>
+        </div>
+      </div>
+      <div class="detail-actions">
+        <button class="btn-buy" onclick="buyNow()">Buy Now — ₹${book.price}</button>
+        <button class="btn-cart-add" onclick="addToCart(currentBook)">Add to Cart</button>
+      </div>
+      <div style="display:flex;gap:1.5rem;font-size:.8rem;color:var(--muted)">
+        <span class="icon-inline">${iconHTML('lock')} Secure payment</span>
+        <span class="icon-inline">${iconHTML('bolt')} Instant delivery</span>
+        <span class="icon-inline"><i class="fa-solid fa-infinity"></i> Lifetime access</span>
+        <span class="icon-inline">${iconHTML('rotateLeft')} 7-day refund</span>
+      </div>
+    </div>`;
+
+  // Reviews
+  const rl = document.getElementById('reviewsList');
+  rl.innerHTML = REVIEWS.map(r=>`
+    <div class="review-card">
+      <div class="review-top">
+        <div class="reviewer-avatar">${r.name.split(' ').map(n=>n[0]).join('')}</div>
+        <div>
+          <div class="reviewer-name">${r.name}</div>
+          <div class="reviewer-date">${r.date}</div>
+          <div class="review-stars">${starsHTML(r.rating)}</div>
+        </div>
+      </div>
+      <p class="review-text">${r.text}</p>
+    </div>`).join('');
+}
+
+function toggleFormat(btn){
+  document.querySelectorAll('.format-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function showPreview(){
+  document.getElementById('previewTitle').textContent = currentBook.title + ' — Preview';
+  document.getElementById('previewContent').innerHTML = `
+    <h3 style="font-family:var(--font-display);font-size:1.3rem;margin-bottom:.8rem">Chapter 1</h3>
+    <p>${currentBook.desc}</p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+    <p style="opacity:.4;font-style:italic">... Purchase the full book to continue reading ...</p>`;
+  showModal('previewModal');
+}
+function buyNow(){
+  if(currentBook) addToCart(currentBook);
+  showPage('cart');
+}
+
+// ===== CART =====
+function addToCart(book){
+  if(!cart.find(i=>i.id===book.id)){
+    cart.push(book);
+    updateCartCount();
+    showToast(`"${book.title}" added to cart!`);
+  } else {
+    showToast('Already in your cart!');
+  }
+}
+function updateCartCount(){
+  document.getElementById('cartCount').textContent = cart.length;
+}
+function removeFromCart(id){
+  cart = cart.filter(i=>i.id!==id);
+  updateCartCount();
+  renderCart();
+}
+function renderCart(){
+  const el = document.getElementById('cartContent');
+  if(cart.length===0){
+    el.innerHTML=`<div class="empty-state"><h3>Your cart is empty</h3><p>Browse our collection and add books you love.</p><br/><button class="btn-primary" onclick="showPage('store')">Browse Books</button></div>`;
+    return;
+  }
+  const subtotal = cart.reduce((s,b)=>s+b.price,0);
+  const tax = Math.round(subtotal*.18);
+  el.innerHTML=`
+    <div class="cart-grid">
+      <div class="cart-items">
+        ${cart.map(b=>`
+          <div class="cart-item">
+            <div class="cart-item-cover"><div class="cart-item-cover-inner">${bookCoverHTML(b,'sm')}</div></div>
+            <div class="cart-item-info">
+              <div class="cart-item-title">${b.title}</div>
+              <div class="cart-item-author">${b.author}</div>
+              <span class="cart-item-format">PDF + EPUB</span>
+            </div>
+            <div style="text-align:right">
+              <div class="cart-item-price">₹${b.price}</div>
+              <button class="cart-remove icon-inline" onclick="removeFromCart(${b.id})"><i class="fa-solid fa-xmark"></i> Remove</button>
+            </div>
+          </div>`).join('')}
+      </div>
+      <div class="cart-summary">
+        <h3>Order Summary</h3>
+        <div class="summary-row"><span>Subtotal (${cart.length} item${cart.length>1?'s':''})</span><span>₹${subtotal}</span></div>
+        <div class="summary-row"><span>GST (18%)</span><span>₹${tax}</span></div>
+        <div class="summary-row"><span>Discount</span><span style="color:var(--success)">−₹0</span></div>
+        <div class="summary-row total"><span>Total</span><span>₹${subtotal+tax}</span></div>
+        <div class="coupon-row">
+          <input class="coupon-input" type="text" placeholder="Coupon code"/>
+          <button class="coupon-btn">Apply</button>
+        </div>
+        <button class="checkout-btn" onclick="showToast('Redirecting to Razorpay...')">Proceed to Checkout</button>
+        <p class="checkout-note icon-inline">${iconHTML('lock')} Secure payment via Razorpay · GST invoice included</p>
+      </div>
+    </div>`;
+}
+
+// ===== LIBRARY =====
+function renderLibrary(){
+  const grid = document.getElementById('libraryGrid');
+  const libBooks = BOOKS.slice(0,3);
+  grid.innerHTML='';
+  libBooks.forEach(b=>{
+    const [bg] = COLORS[b.color%COLORS.length];
+    const card = document.createElement('div');
+    card.className='lib-card';
+    card.innerHTML=`
+      <div class="lib-cover" style="background:${bg}">
+        <div class="lib-cover-inner">${bookCoverHTML(b)}</div>
+      </div>
+      <div class="lib-actions">
+        <button class="lib-btn primary icon-inline" onclick="openReader(${b.id})">${iconHTML('openBook')} Read</button>
+        <button class="lib-btn icon-inline" onclick="downloadBook('${b.title}')">${iconHTML('download')} PDF</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+function switchLibTab(el,tab){
+  document.querySelectorAll('.lib-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderLibrary();
+}
+function downloadBook(title){
+  showToast(`Downloading "${title}"...`);
+}
+
+// ===== READER =====
+const PAGES_CONTENT = [
+  {title:'Chapter 1 — The Beginning',text:'<p>Between life and death there is a library. And within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived.</p><p>To see how things would be different if you had made other choices. Would you have done anything different, if you had the chance to undo your regrets?</p><p>A girl called Nora Seed finds herself in a magical place known as the Midnight Library. And there she begins to wonder: is there a version of her life where she would have been truly happy?</p>'},
+  {title:'Chapter 2 — The Library',text:'<p>The library was vast. It felt somehow both infinite and intimate at the same time. The ceiling was so high that Nora couldn\'t see it. Every book she could see had the same green cover. The same shade of green as her old school uniform.</p><p>She reached out and touched the nearest shelf. The books were warm. She pulled one out and read the title: <em>A Life Where You Stayed in Australia.</em></p>'},
+  {title:'Chapter 3 — A Thousand Lives',text:'<p>She had always wanted to have a different life. Or rather, she had always wanted to be a different person. A better person. Someone who mattered, who made others feel less alone.</p><p>She picked another book off the shelf. This one was titled: <em>A Life Where You Became an Olympic Swimmer.</em> She laughed, despite everything.</p>'},
+  {title:'Chapter 4 — The Root of It',text:'<p>Every life is strange. Every life contains multitudes. The key is not finding the perfect life, but understanding what you actually want from any life at all.</p><p>Mrs Elm appeared as if from nowhere, the way she always seemed to in the school library all those years ago. "Are you ready to try another life, Nora?"</p>'},
+  {title:'Chapter 5 — Finding Home',text:'<p>She understood now. The root problem, the root of all her suffering, wasn\'t any specific regret. It was her lack of appreciation for her own life, in whatever form it took.</p><p>It was time to go back. Not because that life was perfect — far from it — but because it was hers, and she was finally ready to live it fully.</p><p><em>— End of Sample Preview —</em></p>'},
+];
+function openReader(bookId){
+  const book = BOOKS.find(b=>b.id===bookId);
+  if(!book) return;
+  if(!PURCHASED_BOOK_IDS.has(bookId)){
+    showToast('Buy this book to unlock reading');
+    showBookDetail(book);
+    return;
+  }
+  currentBook = book;
+  readerPage = 1;
+  readerFontSize = 16;
+  document.getElementById('readerTitle').textContent = book.title;
+  renderReaderPage();
+  showPage('reader');
+}
+function renderReaderPage(){
+  const p = PAGES_CONTENT[readerPage-1]||PAGES_CONTENT[0];
+  document.getElementById('readerContent').innerHTML = `<h3>${p.title}</h3>${p.text}`;
+  document.getElementById('readerContent').style.fontSize = readerFontSize+'px';
+  document.getElementById('pageInfo').textContent = `Page ${readerPage} of ${PAGES_CONTENT.length}`;
+  document.getElementById('prevPage').disabled = readerPage===1;
+  document.getElementById('nextPage').disabled = readerPage===PAGES_CONTENT.length;
+}
+function changePage(dir){readerPage+=dir;renderReaderPage();}
+function changeFontSize(dir){readerFontSize=Math.max(12,Math.min(24,readerFontSize+dir));document.getElementById('readerContent').style.fontSize=readerFontSize+'px';}
+
+// ===== ADMIN =====
+function renderAdmin(section){
+  if(!adminUnlocked && sessionStorage.getItem('pagevault-admin-unlocked') !== '1'){
+    showAdminGate();
+    return;
+  }
+  adminUnlocked = true;
+  document.getElementById('adminGate').classList.add('hidden');
+  document.getElementById('adminLayout').classList.remove('hidden');
+  adminSection(section, document.querySelector('.admin-nav-item'));
+}
+function adminSection(section, el){
+  document.querySelectorAll('.admin-nav-item').forEach(i=>i.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const main = document.getElementById('adminMain');
+  if(section==='dashboard'){
+    main.innerHTML=`
+      <div class="admin-topbar">
+        <h2>Dashboard</h2>
+        <button class="admin-btn" onclick="showModal('addBookModal')">+ Add Book</button>
+      </div>
+      <div class="admin-stats">
+        <div class="admin-stat"><div class="admin-stat-num">₹1,24,320</div><div class="admin-stat-label">Total Revenue</div><div class="admin-stat-change">↑ 18% this month</div></div>
+        <div class="admin-stat"><div class="admin-stat-num">342</div><div class="admin-stat-label">Orders</div><div class="admin-stat-change">↑ 24 today</div></div>
+        <div class="admin-stat"><div class="admin-stat-num">2,418</div><div class="admin-stat-label">Total Books</div><div class="admin-stat-change">12 added this week</div></div>
+        <div class="admin-stat"><div class="admin-stat-num">18,421</div><div class="admin-stat-label">Users</div><div class="admin-stat-change">↑ 6% this month</div></div>
+      </div>
+      <div class="admin-table">
+        <div class="admin-table-header"><h3>Recent Orders</h3><button class="admin-btn" onclick="adminSection('orders',null)">View All</button></div>
+        <table>
+          <thead><tr><th>Order ID</th><th>Customer</th><th>Book</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody>
+            ${[
+              ['#4821','Priya S.','Atomic Habits','₹349','Completed','13 Jan 2025'],
+              ['#4820','Rahul M.','The Midnight Library','₹299','Completed','13 Jan 2025'],
+              ['#4819','Ananya K.','Dune','₹449','Completed','12 Jan 2025'],
+              ['#4818','Kiran T.','Deep Work','₹279','Pending','12 Jan 2025'],
+              ['#4817','Meera R.','Sapiens','₹399','Completed','11 Jan 2025'],
+            ].map(r=>`<tr><td style="color:var(--muted)">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td style="font-weight:500">${r[3]}</td><td><span class="status-pill ${r[4]==='Completed'?'status-active':'status-pending'}">${r[4]}</span></td><td style="color:var(--muted)">${r[5]}</td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  } else if(section==='books'){
+    main.innerHTML=`
+      <div class="admin-topbar">
+        <h2>Books</h2>
+        <button class="admin-btn" onclick="showModal('addBookModal')">+ Add Book</button>
+      </div>
+      <div class="admin-table">
+        <div class="admin-table-header"><h3>All Books (${BOOKS.length})</h3></div>
+        <table>
+          <thead><tr><th>Title</th><th>Author</th><th>Genre</th><th>Price</th><th>Rating</th><th>Sales</th><th>Actions</th></tr></thead>
+          <tbody>
+            ${BOOKS.slice(0,8).map(b=>`<tr>
+              <td style="font-weight:500">${b.title}</td>
+              <td>${b.author}</td>
+              <td>${b.genre}</td>
+              <td>₹${b.price}</td>
+              <td>${b.rating}★</td>
+              <td>${(b.reviews/12|0).toLocaleString()}</td>
+              <td style="display:flex;gap:.4rem">
+                <button style="background:none;border:1px solid var(--border);padding:.3rem .6rem;border-radius:var(--radius);font-size:.75rem;cursor:pointer">Edit</button>
+                <button style="background:none;border:1px solid var(--danger-soft);color:var(--danger);padding:.3rem .6rem;border-radius:var(--radius);font-size:.75rem;cursor:pointer">Delete</button>
+              </td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  } else if(section==='orders'){
+    main.innerHTML=`
+      <div class="admin-topbar"><h2>Orders</h2></div>
+      <div class="admin-table">
+        <div class="admin-table-header"><h3>All Orders (342)</h3></div>
+        <table>
+          <thead><tr><th>Order ID</th><th>Customer</th><th>Book</th><th>Amount</th><th>Format</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody>
+            ${Array.from({length:8},(_,i)=>`<tr>
+              <td style="color:var(--muted)">#${4821-i}</td>
+              <td>${['Priya S.','Rahul M.','Ananya K.','Kiran T.','Meera R.','Arjun P.','Sunita V.','Dev K.'][i]}</td>
+              <td>${BOOKS[i%BOOKS.length].title}</td>
+              <td>₹${BOOKS[i%BOOKS.length].price}</td>
+              <td>PDF</td>
+              <td><span class="status-pill ${i===3?'status-pending':'status-active'}">${i===3?'Pending':'Completed'}</span></td>
+              <td style="color:var(--muted)">${13-i} Jan 2025</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  } else if(section==='users'){
+    main.innerHTML=`
+      <div class="admin-topbar"><h2>Users</h2></div>
+      <div class="admin-table">
+        <div class="admin-table-header"><h3>All Users (18,421)</h3></div>
+        <table>
+          <thead><tr><th>Name</th><th>Email</th><th>Books Purchased</th><th>Joined</th><th>Status</th></tr></thead>
+          <tbody>
+            ${['Priya Sharma','Rahul Mehta','Ananya Kumar','Kiran Tiwari','Meera Rao'].map((n,i)=>`<tr>
+              <td style="font-weight:500">${n}</td>
+              <td style="color:var(--muted)">${n.toLowerCase().replace(' ','.')}@email.com</td>
+              <td>${[5,12,3,8,21][i]}</td>
+              <td style="color:var(--muted)">Jan 202${3+Math.floor(i/2)}</td>
+              <td><span class="status-pill status-active">Active</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  } else if(section==='coupons'){
+    main.innerHTML=`
+      <div class="admin-topbar"><h2>Coupons</h2>
+        <button class="admin-btn">+ Create Coupon</button>
+      </div>
+      <div class="admin-table">
+        <div class="admin-table-header"><h3>Active Coupons</h3></div>
+        <table>
+          <thead><tr><th>Code</th><th>Discount</th><th>Used</th><th>Expires</th><th>Status</th></tr></thead>
+          <tbody>
+            ${[['WELCOME20','20% off',142,'31 Jan 2025'],['SUMMER50','₹50 off',89,'28 Feb 2025'],['READER10','10% off',31,'30 Mar 2025']].map(c=>`<tr>
+              <td style="font-weight:500;font-family:monospace">${c[0]}</td>
+              <td>${c[1]}</td>
+              <td>${c[2]} times</td>
+              <td style="color:var(--muted)">${c[3]}</td>
+              <td><span class="status-pill status-active">Active</span></td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+  }
+}
+
+// ===== MODALS =====
+function showModal(id){document.getElementById(id).classList.remove('hidden');}
+function closeModal(id){document.getElementById(id).classList.add('hidden');}
+function closeModalOutside(e,id){if(e.target===document.getElementById(id))closeModal(id);}
+
+// ===== TOAST =====
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast success show';
+  setTimeout(()=>{t.className='toast'},3000);
+}
+
+// ===== INIT =====
+window.addEventListener('popstate', syncRoute);
+syncRoute();
+if(!history.state){
+  if(currentPage === 'detail' && currentBook){
+    try { history.replaceState({page:'detail', bookId:currentBook.id}, '', `#/book/${currentBook.id}`); } catch (error) {}
+  } else {
+    const url = currentPage === 'admin' ? '/admin' : pageHash(currentPage || 'home');
+    try { history.replaceState({page:currentPage || 'home'}, '', url); } catch (error) {}
+  }
+}
+</script>
+</body>
+</html>
