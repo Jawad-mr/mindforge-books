@@ -508,15 +508,114 @@ footer{background:var(--ink);color:var(--footer-text);padding:3rem 2rem 2rem;mar
       <div>
         <div class="footer-heading">Support</div>
         <ul class="footer-links">
-          <li><a>FAQ</a></li>
-          <li><a>Contact Us</a></li>
-          <li><a>Refund Policy</a></li>
-          <li><a>Privacy Policy</a></li>
+          <li><a onclick="showPage('faq')">FAQ</a></li>
+          <li><a onclick="showPage('contact')">Contact Us</a></li>
+          <li><a onclick="showPage('refund')">Refund Policy</a></li>
+          <li><a onclick="showPage('privacy')">Privacy Policy</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">© 2025 PageVault. All rights reserved. Secure payments powered by Razorpay.</div>
   </footer>
+</div>
+
+<!-- ======== FAQ PAGE ======== -->
+<div id="page-faq" class="page">
+  <div class="detail-wrap">
+    <div class="detail-back icon-inline" onclick="showPage('home')"><i class="fa-solid fa-arrow-left"></i> Back to Home</div>
+    <h1 style="margin-top:1.5rem;margin-bottom:2rem;font-size:2.4rem">Frequently Asked Questions</h1>
+    <div style="max-width:800px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+      <div style="padding:1.5rem;border-bottom:1px solid var(--border)">
+        <h3 style="font-size:1.15rem;color:var(--ink);margin-bottom:.6rem">How do I purchase and download books?</h3>
+        <p style="font-size:.95rem;line-height:1.75;color:var(--body)">Simply browse our store, select a book, click "Buy Now", and proceed to checkout with Razorpay. Your book will be instantly available in PDF and EPUB formats for download and reading in your library.</p>
+      </div>
+      <div style="padding:1.5rem;border-bottom:1px solid var(--border)">
+        <h3 style="font-size:1.15rem;color:var(--ink);margin-bottom:.6rem">Can I read books online or do I have to download them?</h3>
+        <p style="font-size:.95rem;line-height:1.75;color:var(--body)">You can do both! Our in-browser reader lets you preview and read books instantly. You can also download them in PDF or EPUB format for offline reading on any device.</p>
+      </div>
+      <div style="padding:1.5rem;border-bottom:1px solid var(--border)">
+        <h3 style="font-size:1.15rem;color:var(--ink);margin-bottom:.6rem">What formats are available?</h3>
+        <p style="font-size:.95rem;line-height:1.75;color:var(--body)">All books are available in PDF and EPUB formats. PDF is ideal for reading on computers and tablets, while EPUB is optimized for e-readers and mobile devices.</p>
+      </div>
+      <div style="padding:1.5rem;border-bottom:1px solid var(--border)">
+        <h3 style="font-size:1.15rem;color:var(--ink);margin-bottom:.6rem">Do I have lifetime access?</h3>
+        <p style="font-size:.95rem;line-height:1.75;color:var(--body)">Yes! Once you purchase a book, you own it forever. You can download and read it as many times as you want, on any device, with no expiration date.</p>
+      </div>
+      <div style="padding:1.5rem;border-bottom:1px solid var(--border)">
+        <h3 style="font-size:1.15rem;color:var(--ink);margin-bottom:.6rem">What payment methods do you accept?</h3>
+        <p style="font-size:.95rem;line-height:1.75;color:var(--body)">We accept all major payment methods through Razorpay: credit/debit cards, UPI, net banking, digital wallets, and more. Payments are secure and encrypted.</p>
+      </div>
+      <div style="padding:1.5rem">
+        <h3 style="font-size:1.15rem;color:var(--ink);margin-bottom:.6rem">Are there any hidden fees?</h3>
+        <p style="font-size:.95rem;line-height:1.75;color:var(--body)">No. The price you see is the final price. No hidden charges or subscription fees. You pay once and own the book forever.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== CONTACT PAGE ======== -->
+<div id="page-contact" class="page">
+  <div class="detail-wrap">
+    <div class="detail-back icon-inline" onclick="showPage('home')"><i class="fa-solid fa-arrow-left"></i> Back to Home</div>
+    <h1 style="margin-top:1.5rem;margin-bottom:2rem;font-size:2.4rem">Contact Us</h1>
+    <div style="max-width:800px;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:start">
+      <div>
+        <h2 style="font-size:1.35rem;margin-bottom:1rem">Get in Touch</h2>
+        <p style="font-size:.95rem;line-height:1.75;color:var(--body);margin-bottom:1.5rem">Have a question? We're here to help. Reach out to us and we'll get back to you as soon as possible.</p>
+        <form style="display:flex;flex-direction:column;gap:1rem">
+          <div><label class="form-label">Name</label><input class="form-input" type="text" placeholder="Your name" /></div>
+          <div><label class="form-label">Email</label><input class="form-input" type="email" placeholder="your@email.com" /></div>
+          <div><label class="form-label">Subject</label><input class="form-input" type="text" placeholder="How can we help?" /></div>
+          <div><label class="form-label">Message</label><textarea class="form-input" rows="4" placeholder="Your message..."></textarea></div>
+          <button class="btn-primary" style="align-self:flex-start" onclick="showToast('Thank you! We\'ll respond shortly.')">Send Message</button>
+        </form>
+      </div>
+      <div style="background:var(--cream);border-radius:var(--radius-lg);padding:1.5rem">
+        <h3 style="font-size:1.15rem;margin-bottom:1rem">Other Ways to Reach Us</h3>
+        <div style="margin-bottom:1rem"><div style="font-size:.85rem;text-transform:uppercase;color:var(--muted);letter-spacing:.5px;margin-bottom:.3rem">Email</div><div style="font-size:.95rem;color:var(--ink)">support@pagevault.com</div></div>
+        <div style="margin-bottom:1rem"><div style="font-size:.85rem;text-transform:uppercase;color:var(--muted);letter-spacing:.5px;margin-bottom:.3rem">Phone</div><div style="font-size:.95rem;color:var(--ink)">+91 (123) 456-7890</div></div>
+        <div style="margin-bottom:1rem"><div style="font-size:.85rem;text-transform:uppercase;color:var(--muted);letter-spacing:.5px;margin-bottom:.3rem">Address</div><div style="font-size:.95rem;color:var(--ink)">PageVault HQ<br/>Digital Media Lane<br/>Bangalore, India 560001</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== REFUND POLICY PAGE ======== -->
+<div id="page-refund" class="page">
+  <div class="detail-wrap">
+    <div class="detail-back icon-inline" onclick="showPage('home')"><i class="fa-solid fa-arrow-left"></i> Back to Home</div>
+    <h1 style="margin-top:1.5rem;margin-bottom:2rem;font-size:2.4rem">Refund Policy</h1>
+    <div style="max-width:800px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;color:var(--body);font-size:.95rem;line-height:1.8">
+      <h2 style="font-size:1.3rem;margin-bottom:1rem;color:var(--ink)">7-Day Money Back Guarantee</h2>
+      <p style="margin-bottom:1.5rem">At PageVault, customer satisfaction is our priority. We offer a hassle-free refund within 7 days of purchase if you're not satisfied.</p>
+      <h3 style="font-size:1.1rem;margin-top:1.5rem;margin-bottom:.75rem;color:var(--ink)">Eligibility for Refund</h3>
+      <ul style="margin-left:1.5rem;margin-bottom:1.5rem;list-style-type:disc"><li style="margin-bottom:.5rem">Refund request within 7 days of purchase</li><li style="margin-bottom:.5rem">Full book content not downloaded</li><li style="margin-bottom:.5rem">Book not distributed or shared</li></ul>
+      <h3 style="font-size:1.1rem;margin-top:1.5rem;margin-bottom:.75rem;color:var(--ink)">How to Request</h3>
+      <ol style="margin-left:1.5rem;margin-bottom:1.5rem;list-style-type:decimal"><li style="margin-bottom:.5rem">Log into your account</li><li style="margin-bottom:.5rem">Go to My Library</li><li style="margin-bottom:.5rem">Click Request Refund</li><li style="margin-bottom:.5rem">Refund processed in 3-5 business days</li></ol>
+      <p style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);color:var(--muted);font-size:.88rem">Last updated: January 2025</p>
+    </div>
+  </div>
+</div>
+
+<!-- ======== PRIVACY POLICY PAGE ======== -->
+<div id="page-privacy" class="page">
+  <div class="detail-wrap">
+    <div class="detail-back icon-inline" onclick="showPage('home')"><i class="fa-solid fa-arrow-left"></i> Back to Home</div>
+    <h1 style="margin-top:1.5rem;margin-bottom:2rem;font-size:2.4rem">Privacy Policy</h1>
+    <div style="max-width:800px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;color:var(--body);font-size:.95rem;line-height:1.8">
+      <h2 style="font-size:1.3rem;margin-bottom:1rem;color:var(--ink)">Your Privacy Matters</h2>
+      <p style="margin-bottom:1.5rem">PageVault is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and protect your personal information.</p>
+      <h3 style="font-size:1.1rem;margin-top:1.5rem;margin-bottom:.75rem;color:var(--ink)">Information We Collect</h3>
+      <ul style="margin-left:1.5rem;margin-bottom:1.5rem;list-style-type:disc"><li>Name, email, and account credentials</li><li>Payment information (via Razorpay)</li><li>Reading history and preferences</li><li>Device and usage information</li></ul>
+      <h3 style="font-size:1.1rem;margin-top:1.5rem;margin-bottom:.75rem;color:var(--ink)">How We Use Your Information</h3>
+      <ul style="margin-left:1.5rem;margin-bottom:1.5rem;list-style-type:disc"><li>Process purchases and deliver books</li><li>Send confirmations and support</li><li>Improve services and personalize recommendations</li><li>Comply with legal obligations</li></ul>
+      <h3 style="font-size:1.1rem;margin-top:1.5rem;margin-bottom:.75rem;color:var(--ink)">Data Security</h3>
+      <p style="margin-bottom:1.5rem">We implement industry-standard security. All payment information is encrypted via Razorpay. We don't store full credit card details.</p>
+      <h3 style="font-size:1.1rem;margin-top:1.5rem;margin-bottom:.75rem;color:var(--ink)">Your Rights</h3>
+      <p style="margin-bottom:1rem">You have the right to access, correct, delete your data, and opt-out of marketing.</p>
+      <p style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);color:var(--muted);font-size:.88rem">Last updated: January 2025. Contact: privacy@pagevault.com</p>
+    </div>
+  </div>
 </div>
 
 <!-- ======== STORE PAGE ======== -->
@@ -897,7 +996,7 @@ function renderBookCard(book){
 }
 
 // ===== PAGE NAVIGATION =====
-const NAV_PAGES = new Set(['home','store','cart','library','reader','admin']);
+const NAV_PAGES = new Set(['home','store','cart','library','reader','admin','faq','contact','refund','privacy']);
 
 function pageHash(name){
   return `#/${name}`;
